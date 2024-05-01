@@ -12,6 +12,8 @@ import {
 } from "react-router-dom";
 import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
+import Signin from "./components/LoginPage/Signup";
+import LoginPage from "./components/LoginPage/LoginPage";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -46,13 +48,14 @@ function App() {
               isAuthenticated ? (
                 <Navigate to="/dashboard" />
               ) : (
-                <Login
+                <LoginPage
                   setIsAuthenticated={setIsAuthenticated}
                   notifyLoginSuccess={notifyLoginSuccess}
                 />
               )
             }
           />
+          <Route path="/signin" element={<Signin />} />
         </Routes>
       </BrowserRouter>
       <ToastContainer position="top-center" autoClose={2000} />

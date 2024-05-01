@@ -6,9 +6,12 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ setIsAuthenticated, notifyLoginSuccess, setIsSignup }) => {
+const Signup = ({ setIsAuthenticated, notifyLoginSuccess, setIsSignup }) => {
+  const nameRef = useRef("");
   const emailRef = useRef("");
   const passwordRef = useRef("");
+  const confirmPasswordRef = useRef("");
+
   const navigate = useNavigate();
 
   const notifyLoginFailed = () =>
@@ -22,15 +25,20 @@ const Login = ({ setIsAuthenticated, notifyLoginSuccess, setIsSignup }) => {
       transition: Bounce,
     });
 
-  const switchToSignup = () => {
-    setIsSignup(true);
+  const switchToLogin = () => {
+    setIsSignup(false);
   };
 
   const submitHandler = async (e) => {
     try {
-      const response = await axios.post("http://localhost:8008/users/login", {
+      if (passwordRef.current.value != confirmPasswordRef.current.value) {
+        toast.error("Password and Confirm Password must be same");
+        return "password and confirm password must be same";
+      }
+      const response = await axios.post("http://localhost:8008/users/signup", {
         email: emailRef.current.value,
         password: passwordRef.current.value,
+        name: nameRef.current.value,
       });
       const currentDatePlusOneHour = new Date();
       currentDatePlusOneHour.setHours(currentDatePlusOneHour.getHours() + 1);
@@ -45,6 +53,7 @@ const Login = ({ setIsAuthenticated, notifyLoginSuccess, setIsSignup }) => {
       notifyLoginSuccess();
       console.log("navigated");
     } catch (error) {
+      console.log(error);
       notifyLoginFailed();
     }
   };
@@ -60,9 +69,9 @@ const Login = ({ setIsAuthenticated, notifyLoginSuccess, setIsSignup }) => {
               >
                 <div className="card-body p-5 text-center">
                   <div className="mb-md-5 mt-md-4 pb-5">
-                    <h2 className="fw-bold mb-2 text-uppercase">Login</h2>
+                    <h2 className="fw-bold mb-2 text-uppercase">Signup</h2>
                     <p className="text-white-50 mb-5">
-                      Please enter your login and password!
+                      Please enter your Signup details!
                     </p>
 
                     <div
@@ -70,7 +79,22 @@ const Login = ({ setIsAuthenticated, notifyLoginSuccess, setIsSignup }) => {
                       className="form-outline form-white mb-4"
                     >
                       <input
+                        type="text"
+                        className="form-control form-control-lg"
+                        ref={nameRef}
+                      />
+                      <label className="form-label" htmlFor="typeEmailX">
+                        Name
+                      </label>
+                    </div>
+
+                    <div
+                      data-mdb-input-init
+                      className="form-outline form-white mb-4"
+                    >
+                      <input
                         type="email"
+                        id="typeEmailX"
                         className="form-control form-control-lg"
                         ref={emailRef}
                       />
@@ -88,8 +112,21 @@ const Login = ({ setIsAuthenticated, notifyLoginSuccess, setIsSignup }) => {
                         className="form-control form-control-lg"
                         ref={passwordRef}
                       />
+                      <label className="form-label">Password</label>
+                    </div>
+
+                    <div
+                      data-mdb-input-init
+                      className="form-outline form-white mb-4"
+                    >
+                      <input
+                        type="password"
+                        id="typePasswordX"
+                        className="form-control form-control-lg"
+                        ref={confirmPasswordRef}
+                      />
                       <label className="form-label" htmlFor="typePasswordX">
-                        Password
+                        Confirm Password
                       </label>
                     </div>
 
@@ -100,35 +137,23 @@ const Login = ({ setIsAuthenticated, notifyLoginSuccess, setIsSignup }) => {
                       type="submit"
                       onClick={submitHandler}
                     >
-                      Login
+                      Signup
                     </button>
-
-                    <div className="d-flex justify-content-center text-center mt-4 pt-1">
-                      <a href="#!" className="text-white">
-                        <i className="fab fa-facebook-f fa-lg"></i>
-                      </a>
-                      <a href="#!" className="text-white">
-                        <i className="fab fa-twitter fa-lg mx-4 px-2"></i>
-                      </a>
-                      <a href="#!" className="text-white">
-                        <i className="fab fa-google fa-lg"></i>
-                      </a>
-                    </div>
                   </div>
 
                   <div>
                     <p className="mb-0">
-                      Don't have an account?{" "}
+                      Back to...?{" "}
                       <span
                         href="#!"
                         className="text-white-50 fw-bold"
-                        onClick={switchToSignup}
+                        onClick={switchToLogin}
                         style={{
                           textDecoration: "underline",
                           cursor: "pointer",
                         }}
                       >
-                        Sign Up
+                        Login
                       </span>
                     </p>
                   </div>
@@ -142,4 +167,4 @@ const Login = ({ setIsAuthenticated, notifyLoginSuccess, setIsSignup }) => {
   );
 };
 
-export default Login;
+export default Signup;

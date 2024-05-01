@@ -1,11 +1,12 @@
-import React, { useRef } from "react";
+import axios from "axios";
+import React, { useEffect, useRef } from "react";
 
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 
-const AddStudent = () => {
+const AddStudent = ({ setStds }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
@@ -13,6 +14,28 @@ const AddStudent = () => {
     //@todo api call
     setShow(false);
   };
+
+  const handleStudentCreation = async () => {
+    let response = await axios.post("http://localhost:8080/students", {
+      rollNo: rollNoRef.current.value,
+      email: emailRef.current.value,
+      firstname: firstNameRef.current.value,
+      lastname: lastNameRef.current.value,
+      dateOfBirth: dobRef.current.value,
+      address: addressRef.current.value,
+      department: departmentRef.current.value,
+      parentName: parentNameRef.current.value,
+      bloodGroupRef: bloodGroupRef.current.value,
+      isActive: true,
+    });
+    response = response.data;
+    setStds((prevStds) => {
+      return [...prevStds, response];
+    });
+
+    handleClose();
+  };
+
   const handleShow = () => setShow(true);
 
   //   refs
@@ -121,7 +144,7 @@ const AddStudent = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleStudentCreation}>
             Save Changes
           </Button>
         </Modal.Footer>

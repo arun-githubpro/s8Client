@@ -1,148 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SingleStudentList from "./SingleStudentList";
 import AddStudent from "./AddStudent";
 import ChooseTarget from "./ChooseTarget";
+import axios from "axios";
 
 const StudentsList = () => {
-  const stds = [
-    {
-      rollNo: "1",
-      email: "a1@gmeil.com",
-      firstname: "a",
-      lastname: "1",
-      dateOfBirth: "12-03-2004",
-      address: "address lines",
-      department: "cse",
-      parentName: "par1",
-      bloodGroup: "o-ve",
-      isActive: true,
-      createdTime: "2024-03-22T18:46:03.285Z",
-    },
-    {
-      rollNo: "1",
-      email: "a1@gmeil.com",
-      firstname: "a",
-      lastname: "1",
-      dateOfBirth: "12-03-2004",
-      address: "address lines",
-      department: "cse",
-      parentName: "par1",
-      bloodGroup: "o-ve",
-      isActive: true,
-      createdTime: "2024-03-22T18:46:03.285Z",
-    },
-    {
-      rollNo: "1",
-      email: "a1@gmeil.com",
-      firstname: "a",
-      lastname: "1",
-      dateOfBirth: "12-03-2004",
-      address: "address lines",
-      department: "cse",
-      parentName: "par1",
-      bloodGroup: "o-ve",
-      isActive: true,
-      createdTime: "2024-03-22T18:46:03.285Z",
-    },
-    {
-      rollNo: "1",
-      email: "a1@gmeil.com",
-      firstname: "a",
-      lastname: "1",
-      dateOfBirth: "12-03-2004",
-      address: "address lines",
-      department: "cse",
-      parentName: "par1",
-      bloodGroup: "o-ve",
-      isActive: true,
-      createdTime: "2024-03-22T18:46:03.285Z",
-    },
-    {
-      rollNo: "1",
-      email: "a1@gmeil.com",
-      firstname: "a",
-      lastname: "1",
-      dateOfBirth: "12-03-2004",
-      address: "address lines",
-      department: "cse",
-      parentName: "par1",
-      bloodGroup: "o-ve",
-      isActive: true,
-      createdTime: "2024-03-22T18:46:03.285Z",
-    },
-    {
-      rollNo: "1",
-      email: "a1@gmeil.com",
-      firstname: "a",
-      lastname: "1",
-      dateOfBirth: "12-03-2004",
-      address: "address lines",
-      department: "cse",
-      parentName: "par1",
-      bloodGroup: "o-ve",
-      isActive: true,
-      createdTime: "2024-03-22T18:46:03.285Z",
-    },
-    {
-      rollNo: "1",
-      email: "a1@gmeil.com",
-      firstname: "a",
-      lastname: "1",
-      dateOfBirth: "12-03-2004",
-      address: "address lines",
-      department: "cse",
-      parentName: "par1",
-      bloodGroup: "o-ve",
-      isActive: true,
-      createdTime: "2024-03-22T18:46:03.285Z",
-    },
-    {
-      rollNo: "1",
-      email: "a1@gmeil.com",
-      firstname: "a",
-      lastname: "1",
-      dateOfBirth: "12-03-2004",
-      address: "address lines",
-      department: "cse",
-      parentName: "par1",
-      bloodGroup: "o-ve",
-      isActive: true,
-      createdTime: "2024-03-22T18:46:03.285Z",
-    },
-    {
-      rollNo: "1",
-      email: "a1@gmeil.com",
-      firstname: "atwgsdfgsf",
-      lastname: "1",
-      dateOfBirth: "12-03-2004",
-      address: "address lines",
-      department: "cse",
-      parentName: "par1",
-      bloodGroup: "o-ve",
-      isActive: true,
-      createdTime: "2024-03-22T18:46:03.285Z",
-    },
-    {
-      rollNo: "1",
-      email: "a1@gmeil.com",
-      firstname: "a",
-      lastname: "1",
-      dateOfBirth: "12-03-2004",
-      address: "address lines",
-      department: "cse",
-      parentName: "par1",
-      bloodGroup: "o-ve",
-      isActive: true,
-      createdTime: "2024-03-22T18:46:03.285Z",
-    },
-  ];
+  const [stds, setStds] = useState([]);
+  useEffect(() => {
+    const asyncMethod = async () => {
+      try {
+        let response = await axios.get("http://localhost:8080/students");
+        response = response.data;
+        setStds(response);
+        console.log(response);
+      } catch (error) {
+        console.log("Error occured", error);
+      }
+    };
+    asyncMethod();
+    // return () => {};
+  }, []);
+
   return (
     <div className="mainContainer d-flex justify-content-between align-items-center">
       <div className="studentsContainer " style={{ minWidth: "60vw" }}>
         <div className="d-flex justify-content-between align-items-center">
           <h1>StudentContainer</h1>
           <div>
-            <AddStudent />
+            <AddStudent setStds={setStds} />
           </div>
         </div>
         <ul

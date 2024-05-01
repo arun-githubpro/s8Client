@@ -1,8 +1,21 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const SingleStudentList = ({ student }) => {
-  const [isActive, setIsActive] = useState(false);
-  const activateHandler = (e) => {
+  const [isActive, setIsActive] = useState(student.isActive);
+  const activateHandler = async (e) => {
+    try {
+      let response = await axios.put(
+        `http://localhost:8080/students/${student.rollNo}/${
+          isActive ? "deactivate" : "activate"
+        }`
+      );
+    } catch (error) {
+      console.log(student.rollNo);
+      console.log(error);
+      toast.error("Couldn't change student's status");
+    }
     console.log("isACtive : ", isActive);
     setIsActive(!isActive);
   };
